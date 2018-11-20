@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1074500717527",
+    "firebase_url": "https://sapi-advertiser-56b8c.firebaseio.com",
+    "project_id": "sapi-advertiser-56b8c",
+    "storage_bucket": "sapi-advertiser-56b8c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074500717527:android:e6ffffa6d7bbada4",
+        "android_client_info": {
+          "package_name": "com.example.fuleehnzsolt.sapi_advertiser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1074500717527-8rrh8m9armpbk0j3kue35ke0c3idst15.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFmuQW5LoGMyhDcLoc71XDegIFPhHGf6U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
