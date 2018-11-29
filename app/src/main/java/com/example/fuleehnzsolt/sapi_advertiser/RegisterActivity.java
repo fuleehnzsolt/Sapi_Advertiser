@@ -1,9 +1,11 @@
 package com.example.fuleehnzsolt.sapi_advertiser;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -19,6 +21,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -84,6 +87,9 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                             if (queryDocumentSnapshots.isEmpty()) {
+                                Log.d("Register", "phone nubmer doesn't exists");
+                                Log.d("Register", "registering");
+
                                 PhoneAuthProvider.getInstance().verifyPhoneNumber(
                                         phoneNumber,        // Phone number to verify
                                         60,                 // Timeout duration
@@ -91,10 +97,13 @@ public class RegisterActivity extends AppCompatActivity {
                                         RegisterActivity.this,               // Activity (for callback binding)
                                         mCallbacks // OnVerificationStateChangedCallbacks
                                 );
+
+
                             } else {
 
                                 Toast.makeText(RegisterActivity.this, "This number is already registered", Toast.LENGTH_LONG).show();
-
+                                Log.d("Register", "phone number exists");
+                                Log.d("Register", "sending login sms");
                             }
 
                         }
@@ -132,7 +141,7 @@ public class RegisterActivity extends AppCompatActivity {
                     });
 
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, verificationCode);
-                    sPhoneAuthCredential(credential);
+                    signInWithPhoneAuthCredential(credential);
 
                 }
 
@@ -164,7 +173,7 @@ public class RegisterActivity extends AppCompatActivity {
                 });
 
 
-                sPhoneAuthCredential(credential);
+                signInWithPhoneAuthCredential(credential);
 
             }
 
@@ -192,14 +201,14 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void sPhoneAuthCredential(PhoneAuthCredential credential) {
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(RegisterActivity.this, "You are logged in!", Toast.LENGTH_SHORT).show();
-                            //startActivity(new Intent(RegisterActivity.this, .class));
+                            startActivity(new Intent(RegisterActivity.this, AdvertiseActivity.class));
                             finish();
                         } else {
                             String message = task.getException().toString();

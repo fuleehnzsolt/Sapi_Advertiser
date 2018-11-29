@@ -82,14 +82,16 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                             if (queryDocumentSnapshots.isEmpty()) {
+
                                 Toast.makeText(MainActivity.this, "This number isn't registered!", Toast.LENGTH_LONG).show();
                             } else {
                                 for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                                     if (documentSnapshot.getString("phoneNumber").equals(phoneNumber)) {
-                                        passPhoneNumber = documentSnapshot.getString("phoneNumber");
                                         passFirstName = documentSnapshot.getString("firstName");
                                         passLastName = documentSnapshot.getString("lastName");
-                                        break;
+                                        passPhoneNumber = documentSnapshot.getString("phoneNumber");
+
+
                                     }
                                 }
 
@@ -160,6 +162,11 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(MainActivity.this, "Successfully logged in!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(MainActivity.this, AdvertiseActivity.class);
+                            intent.putExtra("USER_FIRSTNAME", passFirstName);
+                            intent.putExtra("USER_LASTNAME", passLastName);
+                            intent.putExtra("USER_PHONENUMBER", passPhoneNumber);
+                            startActivity(intent);
 
                             finish();
                         } else {
