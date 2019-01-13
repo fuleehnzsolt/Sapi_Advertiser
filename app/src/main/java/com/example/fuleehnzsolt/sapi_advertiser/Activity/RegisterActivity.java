@@ -1,4 +1,4 @@
-package com.example.fuleehnzsolt.sapi_advertiser;
+package com.example.fuleehnzsolt.sapi_advertiser.Activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,11 +7,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.fuleehnzsolt.sapi_advertiser.Data.User;
+import com.example.fuleehnzsolt.sapi_advertiser.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,30 +22,30 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import com.example.fuleehnzsolt.sapi_advertiser.Data.User;
 
 import java.util.concurrent.TimeUnit;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText rFirstName, rLastName, rPhoneNumber, rCode;
+    private EditText regFirstName, regLastName, regPhoneNumber, regCode;
     private Button rCodeButton, registerButton;
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks AuthCallback;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private CollectionReference dbPhoneNumbers;
+
     private String phoneNumber;
     private String mVerificationId;
     private String verificationCode;
     private String firstName;
     private String lastName;
+
     private PhoneAuthProvider.ForceResendingToken mResendToken;
 
     @Override
@@ -55,30 +56,44 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        rFirstName = findViewById(R.id.rfName);
-        rLastName = findViewById(R.id.rlName);
-        rPhoneNumber = findViewById(R.id.rPhoneNumber);
-        rCode = findViewById(R.id.rCodeEdit);
-        rCodeButton = findViewById(R.id.rGetCodeButton);
+        regFirstName = findViewById(R.id.regfName);
+        regLastName = findViewById(R.id.reglName);
+        regPhoneNumber = findViewById(R.id.regPhoneNumber);
+        regCode = findViewById(R.id.regCodeEdit);
+        rCodeButton = findViewById(R.id.regGetCodeButton);
         registerButton = findViewById(R.id.regButton);
 
-        rCode.setVisibility(View.INVISIBLE);
+        regCode.setVisibility(View.INVISIBLE);
         registerButton.setVisibility(View.INVISIBLE);
+
+        /**
+         * Regiszztrálás esetén kitöltjük a kellő mezőket(vezetéknév, keresztnév, telefonszám),
+         * a telefonszáámnak adun kegy +40es kezdőértéket, mivel az ország irányitószáma ennyi és
+         * ne bajlódjunk minden egyes regisztrálásnál a beirásával.
+         * **/
 
         rCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                phoneNumber = rPhoneNumber.getText().toString();
+                phoneNumber = regPhoneNumber.getText().toString();
                 phoneNumber = "+40" + phoneNumber;
-                firstName = rFirstName.getText().toString();
-                lastName = rLastName.getText().toString();
+                firstName = regFirstName.getText().toString();
+                lastName = regLastName.getText().toString();
 
                 if (TextUtils.isEmpty(phoneNumber)) {
 
                     Toast.makeText(RegisterActivity.this, "Enter your phone number, please!", Toast.LENGTH_LONG).show();
 
                 } else {
+
+                    /**
+                     * Meggyőződünk róla, hogy beirtuk a telefonszámoté s nem hagytuk üresen am ezőt.
+                     * Megkeressük az adatbázisban, hogy van e ilyen telefonszám és, ha van tudatjuk a felhasználóval, hogy már regisztrálva
+                     * van és beléphet, regisztráció nélkül.
+                     * Másik esetben, ha nincs regisztrálva vár a kódra, amit SMSben fog megkapni, hogy
+                     * tovább folytathassa a regisztrációt.
+                     * **/
 
                     CollectionReference collectionReference = db.collection("users");
                     Query query = collectionReference.whereEqualTo("phoneNumber", phoneNumber);
@@ -95,9 +110,8 @@ public class RegisterActivity extends AppCompatActivity {
                                         60,                 // Timeout duration
                                         TimeUnit.SECONDS,   // Unit of timeout
                                         RegisterActivity.this,               // Activity (for callback binding)
-                                        mCallbacks // OnVerificationStateChangedCallbacks
+                                        AuthCallback // OnVerificationStateChangedCallbacks
                                 );
-
 
                             } else {
 
@@ -112,11 +126,16 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Regisztráció véglegesités.
+         * Beirjuk a megkapott kódot és bejelentezünk.
+         * **/
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                verificationCode = rCode.getText().toString();
+                verificationCode = regCode.getText().toString();
 
                 if (TextUtils.isEmpty(verificationCode)) {
 
@@ -148,7 +167,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        AuthCallback = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
 
@@ -158,6 +177,9 @@ public class RegisterActivity extends AppCompatActivity {
                         lastName,
                         phoneNumber
                 );
+
+                /**
+                 * Sikeresen létrehoztuk a flehasználónkat, ami eltárolódott az adatbázisban.**/
 
                 dbPhoneNumbers.add(user)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -181,7 +203,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onVerificationFailed(FirebaseException e) {
 
                 Toast.makeText(RegisterActivity.this, "Verification failed!", Toast.LENGTH_LONG).show();
-                rCode.setVisibility(View.INVISIBLE);
+                regCode.setVisibility(View.INVISIBLE);
                 registerButton.setVisibility(View.INVISIBLE);
 
             }
@@ -194,12 +216,16 @@ public class RegisterActivity extends AppCompatActivity {
 
                 Toast.makeText(RegisterActivity.this, "Register code sent...", Toast.LENGTH_SHORT).show();
 
-                rCode.setVisibility(View.VISIBLE);
+                regCode.setVisibility(View.VISIBLE);
                 registerButton.setVisibility(View.VISIBLE);
             }
         };
 
     }
+
+    /**
+     * Bejelentkezünk, ami azt jelenti, hogy átirányitjuk a mostmár immáron felhasználót az
+     * AdvertiseActivitybe**/
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
@@ -218,4 +244,3 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 }
-

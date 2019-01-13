@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Activity.MainActivity">
 
 
     <EditText
-        android:id="@+id/lPhoneNumber"
+        android:id="@+id/logPhoneNumber"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -20,13 +20,13 @@
         android:ems="10"
         android:hint="Enter your phone number"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/lGetCodeButton"
+        app:layout_constraintBottom_toTopOf="@+id/logGetCodeButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <Button
-        android:id="@+id/lGetCodeButton"
+        android:id="@+id/logGetCodeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="146dp"
@@ -36,13 +36,13 @@
         android:layout_marginRight="149dp"
         android:layout_marginBottom="38dp"
         android:text="Get Code"
-        app:layout_constraintBottom_toTopOf="@+id/lCode"
+        app:layout_constraintBottom_toTopOf="@+id/logCode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lPhoneNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/logPhoneNumber" />
 
     <EditText
-        android:id="@+id/lCode"
+        android:id="@+id/logCode"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -57,7 +57,7 @@
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lGetCodeButton" />
+        app:layout_constraintTop_toBottomOf="@+id/logGetCodeButton" />
 
     <Button
         android:id="@+id/loginButton"
@@ -70,13 +70,13 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:text="Login"
-        app:layout_constraintBottom_toTopOf="@+id/lToRegisterButton"
+        app:layout_constraintBottom_toTopOf="@+id/logToRegisterButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lCode" />
+        app:layout_constraintTop_toBottomOf="@+id/logCode" />
 
     <Button
-        android:id="@+id/lToRegisterButton"
+        android:id="@+id/logToRegisterButton"
         android:layout_width="255dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -101,7 +101,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/lPhoneNumber"
+        app:layout_constraintBottom_toTopOf="@+id/logPhoneNumber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

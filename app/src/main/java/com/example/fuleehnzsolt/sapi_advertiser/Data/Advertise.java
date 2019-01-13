@@ -1,10 +1,9 @@
 package com.example.fuleehnzsolt.sapi_advertiser.Data;
 
-public class Advertise
-{
+public class Advertise {
     private String title;
-    private String sDescription;
-    private String lDescription;
+    private String shortDescription;
+    private String longDescription;
     private String phoneNumber;
     private String location;
     private String image;
@@ -12,10 +11,10 @@ public class Advertise
     public Advertise() {
     }
 
-    public Advertise(String title, String sDescription, String lDescription, String phoneNumber, String location, String image) {
+    public Advertise(String title, String shortDescription, String longDescription, String phoneNumber, String location, String image) {
         this.title = title;
-        this.sDescription = sDescription;
-        this.lDescription = lDescription;
+        this.shortDescription = shortDescription;
+        this.longDescription = longDescription;
         this.phoneNumber = phoneNumber;
         this.location = location;
         this.image = image;
@@ -29,20 +28,20 @@ public class Advertise
         this.title = title;
     }
 
-    public String getsDescription() {
-        return sDescription;
+    public String getShortDescription() {
+        return shortDescription;
     }
 
-    public void setsDescription(String sDescription) {
-        this.sDescription = sDescription;
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 
-    public String getlDescription() {
-        return lDescription;
+    public String getLongDescription() {
+        return longDescription;
     }
 
-    public void setlDescription(String lDescription) {
-        this.lDescription = lDescription;
+    public void setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
     }
 
     public String getPhoneNumber() {
